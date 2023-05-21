@@ -1,10 +1,10 @@
-# Asistente Motivacional GPT-3 "El Diegote"
+# Preguntale al diego
 
-Este script de Python utiliza el modelo GPT-3 de OpenAI para simular un asistente motivacional al estilo de "El Diegote". El asistente responde a las solicitudes del usuario generando consejos inspirados en "El Diegote".
+Este script de Python utiliza el modelo GPT-3 de OpenAI para simular un asistente motivacional al estilo del 10.
 
 ## Cómo funciona
 
-El script solicita una entrada al usuario con la frase "Pedile un consejo al Diegote". La entrada del usuario, junto con un contexto predefinido sobre "El Diegote", se envía al modelo GPT-3. El modelo genera una respuesta que luego se imprime en la consola.
+El script solicita una entrada al usuario con la frase "Pedile un consejo al Diegote". La entrada del usuario, junto con un contexto predefinido sobre el mas grande, se envía al modelo GPT-3. El modelo genera una respuesta que luego se imprime en la consola.
 
 Además, la solicitud del usuario y la respuesta del modelo se guardan como un objeto JSON en el archivo history.txt.
 
