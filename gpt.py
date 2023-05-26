@@ -19,7 +19,7 @@ class Gpt3Turbo:
     def set_personality(self, personality):
         self._personality = personality
 
-    def prompt(self, user_input):
+    def chat(self, user_input):
         messages = [
             {"role": "system", "content": f"{self._personality}"},
             {"role": "user", "content": f"{user_input}"}
