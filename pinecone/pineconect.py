@@ -9,14 +9,13 @@ loader = UnstructuredPDFLoader("./diegoteca/mexico-86-mi-mundial-mi-verdad.pdf")
 
 data = loader.load()
 
-print(f'You have {len(data)} docuemnt(s) in your data')
+print(f'You have {len(data)} document(s) in your data')
 print(f'You have {len(data[0].page_content)} character in your document')
 
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
 texts = text_splitter.split_documents(data)
 
 print(f'Now you have {len(texts)} documents')
-
 
 embeddings = OpenAIEmbeddings(openai_api_key=OPENAI_API_KEY)
 
@@ -27,22 +26,28 @@ pinecone.init(
 )
 index_name = "sandbox"
 
-docsearch = Pinecone.from_texts(
-    [t.page_content for t in texts], 
-    embeddings, 
-    index_name=index_name
-)
+# docs = [t.page_content for t in texts]
+# docsearch = Pinecone.from_texts(
+#     docs, 
+#     embeddings, 
+#     index_name=index_name
+# )
 
-from langchain.llms import OpenAI
-from langchain.chains.question_answering import load_qa_chain
+docsearch = Pinecone.from_documents(texts, embeddings, index_name=index_name)
+query_pinecone = "Quien era Platini"
+docs = docsearch.similarity_search(query_pinecone)
+print(docs[0].page_content)
 
-llm = OpenAI(temperature=0, openai_api_key=OPENAI_API_KEY)
-chain = load_qa_chain(llm, chain_type="stuff")
+# from langchain.llms import OpenAI
+# from langchain.chains.question_answering import load_qa_chain
 
-query = """Responde como si fueras Diego: 
-    - usuario: Diego no puedo dejar de tomar falopa
-    - diego: 
-    """
-docs = docsearch.similarity_search(query)
+# llm = OpenAI(temperature=0, openai_api_key=OPENAI_API_KEY)
+# chain = load_qa_chain(llm, chain_type="stuff")
 
-print(chain.run(input_documents=docs, question=query))
+# query = """Responde como si fueras Diego: 
+#     - usuario: Diego no puedo dejar de tomar falopa
+#     - diego: 
+#     """
+# docs = docsearch.similarity_search(query)
+
+# print(chain.run(input_documents=docs, question=query))
