@@ -1,6 +1,6 @@
 import openai
 from config import OPENAI_API_KEY
-from memory import HistorySaver
+from history_saver import HistorySaver
 
 
 class Gpt3Turbo:
@@ -8,20 +8,17 @@ class Gpt3Turbo:
         self,
         temperature=.3,
         max_tokens=100,
-        memory=HistorySaver("history.txt")
+        history_saver=HistorySaver("history.txt")
     ):
         self._model = "gpt-3.5-turbo"
         openai.api_key = OPENAI_API_KEY
-        self._memory = memory
+        self._history_saver = history_saver
         self._temperature = temperature
         self._max_tokens = max_tokens
 
-    def set_personality(self, personality):
-        self._personality = personality
-
-    def chat(self, user_input):
+    def chat(self, user_input, context):
         messages = [
-            {"role": "system", "content": f"{self._personality}"},
+            {"role": "system", "content": f"{context}"},
             {"role": "user", "content": f"{user_input}"}
         ]
         response = openai.ChatCompletion.create(
@@ -29,11 +26,15 @@ class Gpt3Turbo:
             messages=messages,
             temperature=self._temperature,
         )
+        print(f'reponse: [{response}]')
         gpt_output = response.choices[0].message["content"]
-        self._debug(user_input, gpt_output)
-        self._memory.save_history(user_input, gpt_output)
+        self._log_and_save(user_input, gpt_output)
         return gpt_output
 
     def _debug(self, user_input, gpt_output):
         print("\nUser:", user_input)
         print("\nGPT3:", gpt_output)
+
+    def _log_and_save(self, user_input, gpt_output):
+        self._history_saver.save_history(user_input, gpt_output)
+        self._debug(user_input, gpt_output)
