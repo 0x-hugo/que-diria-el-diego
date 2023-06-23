@@ -1,6 +1,5 @@
-# Preguntale al diego
-
-Este script de Python utiliza el modelo GPT-3 de OpenAI para simular un asistente motivacional al estilo del 10.
+# Qué diria el diego [WIP]
+Este script de Python utiliza el modelo GPT-3 de OpenAI para simular al 10.
 
 ## Cómo funciona
 
